@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your resumes — ResumeForge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container navbar-inner">
+    <a href="../frontend/index.html"><div class="brand"><span class="dot"></span> GETResume</div></a>
+    <div class="nav-links"></div>
+    <div class="nav-actions">
+      <span id="userName" style="font-size:.88rem;color:var(--text-lo)"></span>
+      <button id="logoutBtn" class="btn btn-ghost btn-sm">Log out</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page-head">
+  <div class="container page-head-row">
+    <div>
+      <h1>Your resumes</h1>
+      <p>Pick up an existing draft or start a fresh one.</p>
+    </div>
+    <a href="builder.html" class="btn btn-primary">+ New resume</a>
+  </div>
+</div>
+
+<div class="container">
+  <div class="resume-grid" id="resumeGrid">
+    <!-- populated by dashboard.js -->
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

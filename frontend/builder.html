@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resume builder — ResumeForge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container navbar-inner">
+    <a href="../frontend/index.html" class="brand"><span class="dot"></span> GETResume</a>
+    <div class="nav-links"></div>
+    <div class="nav-actions">
+      <span id="saveStatus" style="font-size:.82rem;color:var(--text-lo);font-family:var(--font-mono)"></span>
+      <button id="togglePreviewBtn" class="btn btn-ghost btn-sm" style="display:none">Preview</button>
+      <button id="saveBtn" class="btn btn-primary btn-sm">Save resume</button>
+    </div>
+  </div>
+</nav>
+
+<div class="builder-shell" id="builderShell">
+
+  <!-- STEP SIDEBAR -->
+  <aside class="builder-steps" id="stepSidebar">
+    <div class="step-item active" data-step="1"><span class="step-num">1</span> Personal info</div>
+    <div class="step-item" data-step="2"><span class="step-num">2</span> Summary</div>
+    <div class="step-item" data-step="3"><span class="step-num">3</span> Experience</div>
+    <div class="step-item" data-step="4"><span class="step-num">4</span> Education</div>
+    <div class="step-item" data-step="5"><span class="step-num">5</span> Skills</div>
+    <div class="step-item" data-step="6"><span class="step-num">6</span> Review &amp; export</div>
+  </aside>
+
+  <!-- FORM -->
+  <main class="builder-form">
+
+    <!-- Step 1: Personal -->
+    <section class="step-panel" data-panel="1">
+      <span class="eyebrow">Step 1 of 6</span>
+      <h2>Personal information</h2>
+      <div class="form-row">
+        <div class="field"><label>Full name</label><input type="text" id="p_name" placeholder="Aditi Sharma"></div>
+        <div class="field"><label>Target role / title</label><input type="text" id="p_role" placeholder="Frontend Developer"></div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label>Email</label><input type="email" id="p_email" placeholder="you@example.com"></div>
+        <div class="field"><label>Phone</label><input type="text" id="p_phone" placeholder="+91 98765 43210"></div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label>Location</label><input type="text" id="p_location" placeholder="Kolkata, India"></div>
+        <div class="field"><label>LinkedIn / Portfolio</label><input type="text" id="p_link" placeholder="linkedin.com/in/aditisharma"></div>
+      </div>
+    </section>
+
+    <!-- Step 2: Summary -->
+    <section class="step-panel" data-panel="2" style="display:none">
+      <span class="eyebrow">Step 2 of 6</span>
+      <h2>Professional summary</h2>
+      <div class="field">
+        <label>Summary</label>
+        <textarea id="s_summary" placeholder="2-3 sentences on who you are professionally and what you bring."></textarea>
+        <button type="button" class="ai-btn" id="genSummaryBtn">✦ Generate with AI</button>
+      </div>
+    </section>
+
+    <!-- Step 3: Experience -->
+    <section class="step-panel" data-panel="3" style="display:none">
+      <span class="eyebrow">Step 3 of 6</span>
+      <h2>Work experience</h2>
+      <div id="experienceList"></div>
+      <button type="button" class="btn btn-dark btn-sm" id="addExperienceBtn">+ Add experience</button>
+    </section>
+
+    <!-- Step 4: Education -->
+    <section class="step-panel" data-panel="4" style="display:none">
+      <span class="eyebrow">Step 4 of 6</span>
+      <h2>Education</h2>
+      <div id="educationList"></div>
+      <button type="button" class="btn btn-dark btn-sm" id="addEducationBtn">+ Add education</button>
+    </section>
+
+    <!-- Step 5: Skills -->
+    <section class="step-panel" data-panel="5" style="display:none">
+      <span class="eyebrow">Step 5 of 6</span>
+      <h2>Skills</h2>
+      <div class="field">
+        <label>Add skills (press Enter after each)</label>
+        <div class="skills-input-wrap" id="skillsWrap">
+          <input type="text" id="skillInput" placeholder="Type a skill and hit Enter...">
+        </div>
+        <button type="button" class="ai-btn" id="suggestSkillsBtn">✦ Suggest skills with AI</button>
+        <div class="suggested-skills" id="suggestedSkills"></div>
+      </div>
+    </section>
+
+    <!-- Step 6: Review & Export -->
+    <section class="step-panel" data-panel="6" style="display:none">
+      <span class="eyebrow">Step 6 of 6</span>
+      <h2>Review &amp; export</h2>
+      <p>Check the live preview on the right, run an ATS check, then export your resume as a PDF.</p>
+      <button type="button" class="ai-btn" id="checkAtsBtn">✦ Run AI ATS check</button>
+      <div id="atsNotes" style="margin-top:16px"></div>
+      <div style="margin-top:24px">
+        <button type="button" class="btn btn-primary" id="exportPdfBtn">Download PDF</button>
+      </div>
+    </section>
+
+    <div class="builder-footer">
+      <button type="button" class="btn btn-ghost" id="prevStepBtn">← Back</button>
+      <button type="button" class="btn btn-dark" id="nextStepBtn">Next →</button>
+    </div>
+  </main>
+
+  <!-- LIVE PREVIEW -->
+  <aside class="builder-preview" id="builderPreview">
+    <div class="preview-toolbar">
+      <span class="eyebrow" style="color:var(--text-lo)">Live preview</span>
+      <select id="templateSelect">
+        <option value="classic">Classic</option>
+        <option value="modern">Modern</option>
+        <option value="minimal">Minimal</option>
+      </select>
+    </div>
+    <div class="ats-meter">
+      <span>ATS</span>
+      <div class="ats-bar"><span id="atsBarFill" style="width:0%"></span></div>
+      <span id="atsScoreLabel">--</span>
+    </div>
+    <div class="paper" id="paperPreview"></div>
+  </aside>
+
+</div>
+
+<script src="js/main.js"></script>
+<script src="js/builder.js"></script>
+</body>
+</html>
